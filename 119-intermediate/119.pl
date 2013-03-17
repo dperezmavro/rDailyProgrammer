@@ -28,6 +28,7 @@ while(<GRID>){
 }
 
 my @graph = get_graph( @positions) ;
+print $graph[0][0]->{'left'}."\n";
 
 sub get_graph{
 	my $positions = shift;
@@ -37,20 +38,27 @@ sub get_graph{
 	my $i, my $j, my @graph;
 	for ($i = 0 ; $i < $w; $i++){
 		for ($j = 0 ; $j < $h ; $j++){
-			$graph[$j][$i] = get_value($i,$j,@positions);		
+			$graph[$j][$i] = get_node($i,$j,@positions,$w,$h);		
 		}
 	}
 	return @graph ; 
 }
 
-sub get_value{
-	my ($x,$y,$pos) = @_;
-	my %val = {
+sub get_node{
+	my ($x,$y,$pos,$w,$h) = @_;
+	my $u,my $d,my $l, my $r ; 
+	if($y > 0){
+		
+	}
+	my $val ={
 		left => 0,
 		right => 0 ,
 		top => 0,
 		bottom => 0 ,
 		x => $x ,
 		y => $y};
-	return %val ; 	
+	return $val; 	
+}
+
+sub get_value{
 }
