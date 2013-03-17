@@ -45,5 +45,12 @@ sub get_graph{
 
 sub get_value{
 	my ($x,$y,$pos) = @_;
-	return 0 ; 	
+	my %val = {
+		left => 0,
+		right => 0 ,
+		top => 0,
+		bottom => 0 ,
+		x => $x ,
+		y => $y};
+	return %val ; 	
 }
