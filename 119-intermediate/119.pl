@@ -33,7 +33,7 @@ while(<GRID>){
 }
 
 my @graph = get_graph( @positions) ;
-#print $graph[0][0]->{'left'}." $costs->{'.'}\n";
+print "$graph[3][4]->{'left'}\n";
 
 sub get_graph{
 	my @pos = @_;
@@ -59,15 +59,17 @@ sub get_node{
 	$u = ($y > 0) ? $costs->{$pos[$y-1][$x]} : $costs->{'W'} ;
 	$d = ($y < $h-1) ? $costs->{$pos[$y+1][$x]} : $costs->{'W'};
 	$r = ($x < $w-1) ? $costs->{$pos[$y][$x+1]} : $costs->{'W'};
-	$r = ($x > 0) ? $costs->{$pos[$y][$x-1]} : $costs->{'W'};
+	$l = ($x > 0) ? $costs->{$pos[$y][$x-1]} : $costs->{'W'};
 
 	my $val ={
 		left => $l,
 		right => $r ,
-		top => $t,
-		bottom => $b ,
+		up => $u,
+		down => $d ,
 		x => $x ,
 		y => $y};
+	
+#	print "$x $y $u $d $l $r \n";
 
 	return $val; 	
 }
