@@ -45,7 +45,6 @@ sub get_graph{
 
 	for ($i = 0 ; $i < $w; $i++){
 		for ($j = 0 ; $j < $h ; $j++){
-	#		print "$i $j $w $h \n";
 			$graph[$j][$i] = get_node($i,$j,$w,$h,@pos);		
 		}
 	}
@@ -56,17 +55,17 @@ sub get_node{
 	my ($x,$y,$w,$h,@pos) = @_;
 	my $u,my $d,my $l, my $r ; 
 	our %costs ; 
-
-	print "$x $y \n";
 		
 	$u = ($y > 0) ? $costs->{$pos[$y-1][$x]} : $costs->{'W'} ;
 	$d = ($y < $h-1) ? $costs->{$pos[$y+1][$x]} : $costs->{'W'};
+	$r = ($x < $w-1) ? $costs->{$pos[$y][$x+1]} : $costs->{'W'};
+	$r = ($x > 0) ? $costs->{$pos[$y][$x-1]} : $costs->{'W'};
 
 	my $val ={
-		left => 0,
-		right => 0 ,
-		top => 0,
-		bottom => 0 ,
+		left => $l,
+		right => $r ,
+		top => $t,
+		bottom => $b ,
 		x => $x ,
 		y => $y};
 
