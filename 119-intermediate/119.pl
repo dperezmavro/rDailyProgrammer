@@ -7,41 +7,35 @@ if($#ARGV != 0){
 	exit ;
 }
 
-print "Starting...\n";
-print "Reading file $ARGV[0]...\n";
-
-open (GRID, $ARGV[0]);
-my @positions;
+my @positions; #2D array thatA represents the grid as read from file 
 my $counter = 0 ;
-my $costs = {
+my $costs = { #costs of moving to each tile. W and S have huge costs because they are not meant to be moved into
 		'.' =>1,
 		W => 500,
 		E => 1,
 		S => 500
 		};
 
+open (GRID, $ARGV[0]);
+print "Reading file $ARGV[0]...\n";
 while(<GRID>){
 	chomp;
 	print "$_ \n";
 	my $i ;
 	for($i = 0 ; $i < length($_);$i++){
-		my $char = substr($_,$i,1);
-		$positions[$counter][$i] = $char;
+		$positions[$counter][$i] = substr($_,$i,1);
 	}
 	$counter++;
 }
 
 my @graph = get_graph( @positions) ;
-print "$graph[3][4]->{'left'}\n";
 
-sub get_graph{
+sub get_graph{ #returns a 2D array of hashes, where each hash represents the relationships with its neighboors
 	my @pos = @_;
 	my $h = @pos ; 
 	my $w = $#{$pos[1]}+1;
 	my $i, my $j, my @graph;
 	
-	print "sizes are $w,$h\n";
-
 	for ($i = 0 ; $i < $w; $i++){
 		for ($j = 0 ; $j < $h ; $j++){
 			$graph[$j][$i] = get_node($i,$j,$w,$h,@pos);		
@@ -66,9 +60,8 @@ sub get_node{
 		up => $u,
 		down => $d ,
 		x => $x ,
-		y => $y};
-	
-	#print "$x $y $u $d $l $r \n";
+		y => $y
+	};
 
 	return $val; 	
 }
