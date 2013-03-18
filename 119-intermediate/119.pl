@@ -9,47 +9,57 @@ if($#ARGV != 0){
 
 print "Starting...\n";
 print "Reading file $ARGV[0]...\n";
+
 open (GRID, $ARGV[0]);
 my @positions;
 my $counter = 0 ;
+my $costs = {
+		'.' =>1,
+		W => 100,
+		E => 1,
+		S => 100
+		};
+
 while(<GRID>){
 	chomp;
 	print "$_ \n";
 	my $i ;
 	for($i = 0 ; $i < length($_);$i++){
 		my $char = substr($_,$i,1);
-		if ($char eq 'S'){$positions[$counter][$i]= 0;}
-		elsif($char eq '.'){$positions[$counter][$i]= 1;}
-		elsif($char eq 'E'){$positions[$counter][$i]= 1;}
-		elsif($char eq 'W'){$positions[$counter][$i]= 10;}
+		if ($char eq 'S'){$positions[$counter][$i]= 'S';}
+		elsif($char eq '.'){$positions[$counter][$i]= '.';}
+		elsif($char eq 'E'){$positions[$counter][$i]= 'E';}
+		elsif($char eq 'W'){$positions[$counter][$i]= 'W';}
 		else{print "Illegal character found$char(), quiting!\n";exit;}
 	}
 	$counter++;
 }
 
 my @graph = get_graph( @positions) ;
-print $graph[0][0]->{'left'}."\n";
+print $graph[0][0]->{'left'}." $costs->{'.'}\n";
 
 sub get_graph{
-	my $positions = shift;
+	my $pos = shift;
 	my $h = @positions;
 	my $w = $#{$positions[1]}+1;
 	print "Array size is $w,$h\n";
 	my $i, my $j, my @graph;
 	for ($i = 0 ; $i < $w; $i++){
 		for ($j = 0 ; $j < $h ; $j++){
-			$graph[$j][$i] = get_node($i,$j,@positions,$w,$h);		
+			$graph[$j][$i] = get_node($i,$j,$pos,$w,$h);		
 		}
 	}
 	return @graph ; 
 }
 
 sub get_node{
-	my ($x,$y,$pos,$w,$h) = @_;
+	my ($x,$y,@pos,$w,$h) = @_;
 	my $u,my $d,my $l, my $r ; 
-	if($y > 0){
 		
-	}
+	print "$y $x $costs->{'.'} $pos[$y][$x] \n";
+	$u = ($y > 0 ? $costs->{$pos[$y-1][$x]} : 500 );
+#	print "$u\n";
+	
 	my $val ={
 		left => 0,
 		right => 0 ,
