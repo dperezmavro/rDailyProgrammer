@@ -1,6 +1,8 @@
 #!/usr/bin/perl -w
 use strict ;
 use warnings ;
+use Heap::Priority;
+use AutoLoader ;
 
 if($#ARGV != 0){
 	print "Usage : 119.pl <file-to-read>\n";
@@ -8,6 +10,8 @@ if($#ARGV != 0){
 }
 
 my @positions; #2D array thatA represents the grid as read from file 
+my @graph ; 
+my $fringe ;
 my $counter = 0 ;
 my $costs = { #costs of moving to each tile. W and S have huge costs because they are not meant to be moved into
 		'.' =>1,
@@ -28,8 +32,14 @@ while(<GRID>){
 	$counter++;
 }
 
-my @graph = get_graph( @positions) ;
+@graph = get_graph( @positions) ;
+$fringe = Heap::Priority->new  ;
+$fringe->add('aad',3);
+print "fringe hasfringe has ".$fringe->count()." items,".$fringe->pop()."\n";
 
+#############################################################################
+#  auxiliary subroutines and functions from now on
+############################################################################
 sub get_graph{ #returns a 2D array of hashes, where each hash represents the relationships with its neighboors
 	my @pos = @_;
 	my $h = @pos ; 
@@ -64,4 +74,12 @@ sub get_node{
 	};
 
 	return $val; 	
+}
+
+sub g{#function that calculates cost of going from node n to n'
+	return 0 ;
+}
+
+sub h{#this is the heuristic function
+	return 0 ;
 }
