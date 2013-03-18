@@ -57,7 +57,8 @@ sub get_node{
 	my $u,my $d,my $l, my $r ; 
 		
 	print "$y $x $costs->{'.'} $pos[$y][$x] \n";
-	$u = ($y > 0 ? $costs->{$pos[$y-1][$x]} : 'W' );
+
+	$u = $y > 0 ? $costs->{$pos[$y-1][$x]} : 'W' ;
 	
 	my $val ={
 		left => 0,
@@ -66,8 +67,6 @@ sub get_node{
 		bottom => 0 ,
 		x => $x ,
 		y => $y};
-	return $val; 	
-}
 
-sub get_value{
+	return $val; 	
 }
