@@ -10,7 +10,8 @@ if($#ARGV != 0){
 }
 
 my @positions; #2D array thatA represents the grid as read from file 
-my @graph ; 
+my @graph ;
+my ($startX,$startY,$endX,$endY);
 my $fringe ;
 my $counter = 0 ;
 my $costs = { #costs of moving to each tile. W and S have huge costs because they are not meant to be moved into
@@ -44,11 +45,14 @@ sub get_graph{ #returns a 2D array of hashes, where each hash represents the rel
 	my @pos = @_;
 	my $h = @pos ; 
 	my $w = $#{$pos[1]}+1;
-	my $i, my $j, my @graph;
+	my ($i, $j, @graph);
+	our ($startX, $startY, $endX,$endY);
 	
 	for ($i = 0 ; $i < $w; $i++){
 		for ($j = 0 ; $j < $h ; $j++){
 			$graph[$j][$i] = get_node($i,$j,$w,$h,@pos);		
+			if($pos[$j][$i] eq 'S'){$startX = $i; $startY = $j;}
+			elsif( $pos[$j][$i] eq 'E' ){$endY = $j; $endX = $i;}
 		}
 	}
 	return @graph ; 
@@ -74,6 +78,10 @@ sub get_node{
 	};
 
 	return $val; 	
+}
+
+sub f{
+	return 0 ;
 }
 
 sub g{#function that calculates cost of going from node n to n'
