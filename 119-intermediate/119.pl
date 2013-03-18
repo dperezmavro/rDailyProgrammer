@@ -15,9 +15,9 @@ my @positions;
 my $counter = 0 ;
 my $costs = {
 		'.' =>1,
-		W => 100,
+		W => 500,
 		E => 1,
-		S => 100
+		S => 500
 		};
 
 while(<GRID>){
@@ -42,8 +42,8 @@ sub get_graph{
 	my $pos = shift;
 	my $h = @positions;
 	my $w = $#{$positions[1]}+1;
-	print "Array size is $w,$h\n";
 	my $i, my $j, my @graph;
+
 	for ($i = 0 ; $i < $w; $i++){
 		for ($j = 0 ; $j < $h ; $j++){
 			$graph[$j][$i] = get_node($i,$j,$pos,$w,$h);		
@@ -57,8 +57,7 @@ sub get_node{
 	my $u,my $d,my $l, my $r ; 
 		
 	print "$y $x $costs->{'.'} $pos[$y][$x] \n";
-	$u = ($y > 0 ? $costs->{$pos[$y-1][$x]} : 500 );
-#	print "$u\n";
+	$u = ($y > 0 ? $costs->{$pos[$y-1][$x]} : 'W' );
 	
 	my $val ={
 		left => 0,
