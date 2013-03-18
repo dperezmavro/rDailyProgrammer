@@ -54,11 +54,12 @@ sub get_graph{
 sub get_node{
 	my ($x,$y,@pos,$w,$h) = @_;
 	my $u,my $d,my $l, my $r ; 
-	our $costs ; 
+	our %costs ; 
 		
+	print "$x $y $pos[$y][$x]\n";
+	$u = $y > 0 ? $costs->{'.'} : $costs->{'W'} ;
+	print "$x $y $pos[$y][$x] $u \n";
 
-	$u = $y > 0 ? 0 : $costs->{'W'} ;
-	
 	my $val ={
 		left => 0,
 		right => 0 ,
