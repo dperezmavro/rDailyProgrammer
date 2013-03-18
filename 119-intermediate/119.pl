@@ -34,8 +34,7 @@ while(<GRID>){
 }
 $fringe = Heap::Priority->new  ;
 @graph = get_graph( @positions) ;
-$fringe->add('aad',3);
-print "fringe hasfringe has ".$fringe->count()." items,".$fringe->pop()."\n";
+expand($fringe->pop());
 
 #############################################################################
 #  auxiliary subroutines and functions from now on
@@ -53,7 +52,7 @@ sub get_graph{ #returns a 2D array of hashes, where each hash represents the rel
 			if($pos[$j][$i] eq 'S'){
 				$startX = $i;
 				$startY = $j;
-				#$fringe->add($i.','.$j,0);
+				$fringe->add($i.','.$j,0);
 			}
 			elsif( $pos[$j][$i] eq 'E' ){
 				$endY = $j;
@@ -87,17 +86,25 @@ sub get_node{
 }
 
 sub expand{
-	
+	my ($coords) = @_ ;
+	my ($x,$y) = split(',',$coords);
+	print "Expanding node $x,$y...\n";
 }
 
 sub f{
+	my ($coords) = @_ ;
+	my ($x,$y) = split(',',$coords);
 	return 0 ;
 }
 
 sub g{#function that calculates cost of going from node n to n'
+	my ($coords) = @_ ;
+	my ($x,$y) = split(',',$coords);
 	return 0 ;
 }
 
 sub h{#this is the heuristic function
+	my ($coords) = @_ ;
+	my ($x,$y) = split(',',$coords);
 	return 0 ;
 }
