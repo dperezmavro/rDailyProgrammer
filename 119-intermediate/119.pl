@@ -38,7 +38,7 @@ my @graph = get_graph( @positions) ;
 sub get_graph{
 	my @pos = shift;
 	my $h = $#pos;
-	my $w = $#{$positions[1]}+1;
+	my $w = $#{$pos[1]}+1;
 	my $i, my $j, my @graph;
 
 	for ($i = 0 ; $i < $w; $i++){
