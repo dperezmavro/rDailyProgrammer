@@ -27,7 +27,7 @@ while(<GRID>){
 	for($i = 0 ; $i < length($_);$i++){
 		my $char = substr($_,$i,1);
 		$positions[$counter][$i] = $char;
-	#	print "\$position[$counter][$i] =$positions[$counter][$i]\n";
+		#print "\$position[$counter][$i] =$positions[$counter][$i]\n";
 	}
 	$counter++;
 }
@@ -36,10 +36,12 @@ my @graph = get_graph( @positions) ;
 #print $graph[0][0]->{'left'}." $costs->{'.'}\n";
 
 sub get_graph{
-	my @pos = shift;
-	my $h = $#pos;
+	my @pos = @_;
+	my $h = @pos ; 
 	my $w = $#{$pos[1]}+1;
 	my $i, my $j, my @graph;
+	
+	print "sizes are $w,$h\n";
 
 	for ($i = 0 ; $i < $w; $i++){
 		for ($j = 0 ; $j < $h ; $j++){
@@ -54,7 +56,6 @@ sub get_node{
 	my $u,my $d,my $l, my $r ; 
 	our $costs ; 
 		
-#	print "$y $x $pos[3][0]\n";
 
 	$u = $y > 0 ? 0 : $costs->{'W'} ;
 	
