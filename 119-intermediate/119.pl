@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 use strict ;
 use warnings ;
-use Heap::Priority;
 use AutoLoader ;
+use Heap::Priority;
 
 if($#ARGV != 0){
 	print "Usage : 119.pl <file-to-read>\n";
@@ -32,9 +32,8 @@ while(<GRID>){
 	}
 	$counter++;
 }
-
-@graph = get_graph( @positions) ;
 $fringe = Heap::Priority->new  ;
+@graph = get_graph( @positions) ;
 $fringe->add('aad',3);
 print "fringe hasfringe has ".$fringe->count()." items,".$fringe->pop()."\n";
 
@@ -51,8 +50,15 @@ sub get_graph{ #returns a 2D array of hashes, where each hash represents the rel
 	for ($i = 0 ; $i < $w; $i++){
 		for ($j = 0 ; $j < $h ; $j++){
 			$graph[$j][$i] = get_node($i,$j,$w,$h,@pos);		
-			if($pos[$j][$i] eq 'S'){$startX = $i; $startY = $j;}
-			elsif( $pos[$j][$i] eq 'E' ){$endY = $j; $endX = $i;}
+			if($pos[$j][$i] eq 'S'){
+				$startX = $i;
+				$startY = $j;
+				#$fringe->add($i.','.$j,0);
+			}
+			elsif( $pos[$j][$i] eq 'E' ){
+				$endY = $j;
+				$endX = $i;
+			}
 		}
 	}
 	return @graph ; 
@@ -70,7 +76,7 @@ sub get_node{
 
 	my $val ={
 		left => $l,
-		right => $r ,
+		right => $r,
 		up => $u,
 		down => $d ,
 		x => $x ,
@@ -78,6 +84,10 @@ sub get_node{
 	};
 
 	return $val; 	
+}
+
+sub expand{
+	
 }
 
 sub f{
