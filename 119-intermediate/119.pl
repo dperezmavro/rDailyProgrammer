@@ -33,6 +33,7 @@ while(<GRID>){
 	$counter++;
 }
 $fringe = Heap::Priority->new  ;
+$fringe->lowest_first ;
 @graph = get_graph( @positions) ;
 expand($fringe->pop());
 
@@ -85,26 +86,31 @@ sub get_node{
 	return $val; 	
 }
 
+sub start{
+	
+}
+
 sub expand{
 	my ($coords) = @_ ;
 	my ($x,$y) = split(',',$coords);
+	our $fringe ;
 	print "Expanding node $x,$y...\n";
 }
 
 sub f{
 	my ($coords) = @_ ;
 	my ($x,$y) = split(',',$coords);
-	return 0 ;
+	return g($x,$y) + h($x,$y);
 }
 
 sub g{#function that calculates cost of going from node n to n'
-	my ($coords) = @_ ;
-	my ($x,$y) = split(',',$coords);
-	return 0 ;
+	my ($x,$y) = @_ ;
+	our (%costs,) ;
+	return $costs->{$positions[$y][$x]} ;
 }
 
 sub h{#this is the heuristic function
-	my ($coords) = @_ ;
-	my ($x,$y) = split(',',$coords);
-	return 0 ;
+	my ($x,$y) = @_ ;
+	our ($endX,$endY);
+	return sqrt( ($endY - $y )**2 + ($endX - $x)**2 ) ;
 }
