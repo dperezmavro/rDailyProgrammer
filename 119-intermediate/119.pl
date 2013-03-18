@@ -27,7 +27,6 @@ while(<GRID>){
 	for($i = 0 ; $i < length($_);$i++){
 		my $char = substr($_,$i,1);
 		$positions[$counter][$i] = $char;
-		#print "\$position[$counter][$i] =$positions[$counter][$i]\n";
 	}
 	$counter++;
 }
@@ -69,7 +68,7 @@ sub get_node{
 		x => $x ,
 		y => $y};
 	
-#	print "$x $y $u $d $l $r \n";
+	#print "$x $y $u $d $l $r \n";
 
 	return $val; 	
 }
