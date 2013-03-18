@@ -26,17 +26,13 @@ while(<GRID>){
 	my $i ;
 	for($i = 0 ; $i < length($_);$i++){
 		my $char = substr($_,$i,1);
-		if ($char eq 'S'){$positions[$counter][$i]= 'S';}
-		elsif($char eq '.'){$positions[$counter][$i]= '.';}
-		elsif($char eq 'E'){$positions[$counter][$i]= 'E';}
-		elsif($char eq 'W'){$positions[$counter][$i]= 'W';}
-		else{print "Illegal character found$char(), quiting!\n";exit;}
+		$positions[$counter][$i] = $char;
 	}
 	$counter++;
 }
 
 my @graph = get_graph( @positions) ;
-print $graph[0][0]->{'left'}." $costs->{'.'}\n";
+#print $graph[0][0]->{'left'}." $costs->{'.'}\n";
 
 sub get_graph{
 	my $pos = shift;
@@ -55,10 +51,11 @@ sub get_graph{
 sub get_node{
 	my ($x,$y,@pos,$w,$h) = @_;
 	my $u,my $d,my $l, my $r ; 
+	our $costs ; 
 		
-	print "$y $x $costs->{'.'} $pos[$y][$x] \n";
+	print "$y $x $pos[0][0]\n";
 
-	$u = $y > 0 ? $costs->{$pos[$y-1][$x]} : 'W' ;
+	$u = $y > 0 ? 0 : $costs->{'W'} ;
 	
 	my $val ={
 		left => 0,
