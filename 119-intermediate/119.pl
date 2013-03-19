@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl 
 use strict ;
 use warnings ;
 use AutoLoader ;
@@ -51,12 +51,12 @@ sub get_graph{ #returns a 2D array of hashes, where each hash represents the rel
 				$startX = $i;
 				$startY = $j;
 				$fringe->add($i.','.$j,0);
-				print "Start at $i,$j \n";
+				print "Start at ($i,$j).\n";
 			}
 			elsif( $positions[$j][$i] eq 'E' ){
 				$endY = $j;
 				$endX = $i;
-				print "End at $i,$j \n";
+				print "End at ($i,$j).\n";
 			}
 		}
 	}
@@ -91,15 +91,12 @@ sub start{
 		my $a = $fringe->pop();
 		($x,$y) = split(",",$a);
 		if ($positions[$y][$x] eq 'E'){
-			print "Reached exist at ($a) in $found steps.\n";
-			print scalar(keys %visited)."\n";
+			print "Reached exist at ($a) and expanded ".scalar(keys %visited)." nodes.\n";
 			$found = 1 ;
 			exit ;
 		}else{
-			if(exists $visited{$a}){
-				#print "node $a is already visited \n";
-			}else{
-				print "Expanding node $a...\n";
+			if(!exists $visited{$a}){
+				print "Expanding node ($a)...\n";
 				expand($a);
 				$visited{$a} = 1 ;
 			}
