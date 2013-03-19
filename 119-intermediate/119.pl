@@ -9,11 +9,11 @@ if($#ARGV != 0){
 	exit ;
 }
 
-our @positions; #2D array thatA represents the grid as read from file 
-our @graph ;
+our(@positions,@graph); #2D array thatA represents the grid as read from file, graph is the network of neighboors and paths 
 our ($startX,$startY,$endX,$endY);
-our $fringe ;
-our $counter = 0 ;
+our $fringe ; #fringe list with nodes to expand
+our %visited = (); #hash to keep track of visited nodes 
+our $counter = 0 ; #variable to help with indicating the height of the grid, used while reading from file 
 our $costs = { #costs of moving to each tile. W and S have huge costs because they are not meant to be moved into
 		'.' =>1,
 		W => 500,
@@ -88,16 +88,23 @@ sub get_node{
 sub start{
 	my $found = 1 ;
 	my ($x,$y);
-	while($found < 50 ){
+	while($found < 50 && $fringe->count() > 0 ){
 		my $a = $fringe->pop();
 		($x,$y) = split(",",$a);
 		if ($positions[$y][$x] eq 'E'){
+			print "Found exit at $a , done in $found steps\n";
 			$found = 0 ;
-			print "Found exit at \n";
+			exit ;
 		}else{
-			expand($a);
-$found++;
+			if(exists $visited{$a}){
+				print "node $a is already visited \n";
+			}else{
+				print "Expanding node $a...\n";
+				expand($a);
+				$visited{$a} = 1 ;
+			}
 		}
+		$found++;
 	}	
 }
 
@@ -105,8 +112,6 @@ sub expand{
 	my ($coords) = @_ ;
 	my ($x,$y) = split(",",$coords);
 	
-	print "Expanding node $x,$y...\n";
-
 	if($graph[$y][$x]->{left} == 1 ){$fringe->add(($x-1) .','.$y,f($x-1,$y));}
 	if($graph[$y][$x]->{up} == 1 ){$fringe->add($x.','. ($y-1),f($x,$y-1))};
 	if($graph[$y][$x]->{right} == 1 ){$fringe->add(($x+1) .','.$y,f($x+1,$y));}
