@@ -93,15 +93,16 @@ sub start{
 		($x,$y) = split(",",$a);
 		if ($positions[$y][$x] eq 'E'){
 			print "Found exit at $a , done in $found steps\n";
+			print scalar(keys %visited)."\n";
 			exit ;
 		}else{
 			if(exists $visited{$a}){
-				print "node $a is already visited \n";
+				#print "node $a is already visited \n";
 			}else{
 				print "Expanding node $a...\n";
-				$found++;
 				expand($a);
 				$visited{$a} = 1 ;
+				$found++;
 			}
 		}
 	}	
