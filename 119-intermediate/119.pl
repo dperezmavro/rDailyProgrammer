@@ -102,14 +102,11 @@ sub start{
 				print "Expanding node $a...\n";
 				expand($a);
 				$visited{$a} = 1 ;
-				$found++;
 			}
 		}
 	}	
 
-	if($found){
-		print "Exit found!\n";
-	}else{
+	if($found == 0 ){
 		print "Exit not found!\n";
 	}
 }
@@ -117,7 +114,7 @@ sub start{
 sub expand{
 	my ($coords) = @_ ;
 	my ($x,$y) = split(",",$coords);
-	print "f($x,$y) = ".f($x,$y)."\n";	
+	#print "f($x,$y) = ".f($x,$y)."\n";	
 	if($graph[$y][$x]->{left} == 1 ){$fringe->add(($x-1) .','.$y,f($x-1,$y));}
 	if($graph[$y][$x]->{up} == 1 ){$fringe->add($x.','. ($y-1),f($x,$y-1))};
 	if($graph[$y][$x]->{right} == 1 ){$fringe->add(($x+1) .','.$y,f($x+1,$y));}
