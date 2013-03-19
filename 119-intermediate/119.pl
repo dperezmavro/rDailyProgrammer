@@ -35,7 +35,7 @@ while(<GRID>){
 $fringe = Heap::Priority->new  ;
 $fringe->lowest_first ;
 @graph = get_graph() ;
-print "Fringe size is ".  $fringe->count() .', '. $fringe->pop() ."\n";
+print "Fringe size is ".  $fringe->count() ."\n";
 start();
 
 #############################################################################
@@ -88,32 +88,29 @@ sub get_node{
 sub start{
 	my $found = 1 ;
 	my ($x,$y);
-	while($found){
-		my @arr = split(',',$fringe->pop());	
-		$x = $arr[0];
-		$y = $arr[1];
+	while($found < 50 ){
+		my $a = $fringe->pop();
+		($x,$y) = split(",",$a);
 		if ($positions[$y][$x] eq 'E'){
 			$found = 0 ;
+			print "Found exit at \n";
 		}else{
-			my $a = $fringe->pop();
-			print "$a \n";
-			#expand($fringe->pop());
-			$found = 0 ;
+			expand($a);
+$found++;
 		}
 	}	
-	print "Done, exit found at ($x,$y)";
 }
 
 sub expand{
 	my ($coords) = @_ ;
-	my ($x,$y) = split(',',$coords);
+	my ($x,$y) = split(",",$coords);
 	
 	print "Expanding node $x,$y...\n";
 
-	if($graph[$y][$x]->{left} == 1 ){$fringe->add($x-1 .','.$y,f($x-1,$y));}
-	if($graph[$y][$x]->{up} == 1 ){$fringe->add($x.','.$y-1,f($x,$y-1))};
-	if($graph[$y][$x]->{right} == 1 ){$fringe->add($x+1 .','.$y,f($x+1,$y));}
-	if($graph[$y][$x]->{down} == 1 ){$fringe->add($x.','.$y+1,f($x,$y+1));}
+	if($graph[$y][$x]->{left} == 1 ){$fringe->add(($x-1) .','.$y,f($x-1,$y));}
+	if($graph[$y][$x]->{up} == 1 ){$fringe->add($x.','. ($y-1),f($x,$y-1))};
+	if($graph[$y][$x]->{right} == 1 ){$fringe->add(($x+1) .','.$y,f($x+1,$y));}
+	if($graph[$y][$x]->{down} == 1 ){$fringe->add($x.','. ($y+1),f($x,$y+1));}
 }
 
 sub f{
