@@ -9,12 +9,12 @@ if($#ARGV != 0){
 	exit ;
 }
 
-my @positions; #2D array thatA represents the grid as read from file 
-my @graph ;
-my ($startX,$startY,$endX,$endY);
-my $fringe ;
-my $counter = 0 ;
-my $costs = { #costs of moving to each tile. W and S have huge costs because they are not meant to be moved into
+our @positions; #2D array thatA represents the grid as read from file 
+our @graph ;
+our ($startX,$startY,$endX,$endY);
+our $fringe ;
+our $counter = 0 ;
+our $costs = { #costs of moving to each tile. W and S have huge costs because they are not meant to be moved into
 		'.' =>1,
 		W => 500,
 		E => 1,
@@ -34,30 +34,30 @@ while(<GRID>){
 }
 $fringe = Heap::Priority->new  ;
 $fringe->lowest_first ;
-@graph = get_graph( @positions) ;
-expand($fringe->pop());
+@graph = get_graph() ;
+print "Fringe size is ".  $fringe->count() .', '. $fringe->pop() ."\n";
+start();
 
 #############################################################################
 #  auxiliary subroutines and functions from now on
 ############################################################################
 sub get_graph{ #returns a 2D array of hashes, where each hash represents the relationships with its neighboors
-	my @pos = @_;
-	my $h = @pos ; 
-	my $w = $#{$pos[1]}+1;
+	my $h = @positions ; 
+	my $w = $#{$positions[1]}+1;
 	my ($i, $j, @graph);
-	our ($startX, $startY, $endX,$endY);
-	
 	for ($i = 0 ; $i < $w; $i++){
 		for ($j = 0 ; $j < $h ; $j++){
-			$graph[$j][$i] = get_node($i,$j,$w,$h,@pos);		
-			if($pos[$j][$i] eq 'S'){
+			$graph[$j][$i] = get_node($i,$j,$w,$h);		
+			if($positions[$j][$i] eq 'S'){
 				$startX = $i;
 				$startY = $j;
 				$fringe->add($i.','.$j,0);
+				print "Start at $i,$j \n";
 			}
-			elsif( $pos[$j][$i] eq 'E' ){
+			elsif( $positions[$j][$i] eq 'E' ){
 				$endY = $j;
 				$endX = $i;
+				print "End at $i,$j \n";
 			}
 		}
 	}
@@ -65,14 +65,13 @@ sub get_graph{ #returns a 2D array of hashes, where each hash represents the rel
 }
 
 sub get_node{
-	my ($x,$y,$w,$h,@pos) = @_;
+	my ($x,$y,$w,$h) = @_;
 	my $u,my $d,my $l, my $r ; 
-	our %costs ; 
 		
-	$u = ($y > 0) ? $costs->{$pos[$y-1][$x]} : $costs->{'W'} ;
-	$d = ($y < $h-1) ? $costs->{$pos[$y+1][$x]} : $costs->{'W'};
-	$r = ($x < $w-1) ? $costs->{$pos[$y][$x+1]} : $costs->{'W'};
-	$l = ($x > 0) ? $costs->{$pos[$y][$x-1]} : $costs->{'W'};
+	$u = ($y > 0) ? $costs->{$positions[$y-1][$x]} : $costs->{'W'} ;
+	$d = ($y < $h-1) ? $costs->{$positions[$y+1][$x]} : $costs->{'W'};
+	$r = ($x < $w-1) ? $costs->{$positions[$y][$x+1]} : $costs->{'W'};
+	$l = ($x > 0) ? $costs->{$positions[$y][$x-1]} : $costs->{'W'};
 
 	my $val ={
 		left => $l,
@@ -87,30 +86,48 @@ sub get_node{
 }
 
 sub start{
-	
+	my $found = 1 ;
+	my ($x,$y);
+	while($found){
+		my @arr = split(',',$fringe->pop());	
+		$x = $arr[0];
+		$y = $arr[1];
+		if ($positions[$y][$x] eq 'E'){
+			$found = 0 ;
+		}else{
+			my $a = $fringe->pop();
+			print "$a \n";
+			#expand($fringe->pop());
+			$found = 0 ;
+		}
+	}	
+	print "Done, exit found at ($x,$y)";
 }
 
 sub expand{
 	my ($coords) = @_ ;
 	my ($x,$y) = split(',',$coords);
-	our $fringe ;
+	
 	print "Expanding node $x,$y...\n";
+
+	if($graph[$y][$x]->{left} == 1 ){$fringe->add($x-1 .','.$y,f($x-1,$y));}
+	if($graph[$y][$x]->{up} == 1 ){$fringe->add($x.','.$y-1,f($x,$y-1))};
+	if($graph[$y][$x]->{right} == 1 ){$fringe->add($x+1 .','.$y,f($x+1,$y));}
+	if($graph[$y][$x]->{down} == 1 ){$fringe->add($x.','.$y+1,f($x,$y+1));}
 }
 
 sub f{
-	my ($coords) = @_ ;
-	my ($x,$y) = split(',',$coords);
+	my ($x,$y) = @_ ;
 	return g($x,$y) + h($x,$y);
 }
 
 sub g{#function that calculates cost of going from node n to n'
 	my ($x,$y) = @_ ;
-	our (%costs,) ;
 	return $costs->{$positions[$y][$x]} ;
 }
 
 sub h{#this is the heuristic function
+#heuristic here assumes straight distance from node to end 
 	my ($x,$y) = @_ ;
-	our ($endX,$endY);
 	return sqrt( ($endY - $y )**2 + ($endX - $x)**2 ) ;
 }
