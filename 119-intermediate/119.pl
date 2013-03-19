@@ -35,7 +35,6 @@ while(<GRID>){
 $fringe = Heap::Priority->new  ;
 $fringe->lowest_first ;
 @graph = get_graph() ;
-print "Fringe size is ".  $fringe->count() ."\n";
 start();
 
 #############################################################################
@@ -86,14 +85,15 @@ sub get_node{
 }
 
 sub start{
-	my $found = 1 ;
+	my $found = 0 ;
 	my ($x,$y);
-	while($found < 50 && $fringe->count() > 0 ){
+	while($fringe->count() > 0 ){
 		my $a = $fringe->pop();
 		($x,$y) = split(",",$a);
 		if ($positions[$y][$x] eq 'E'){
-			print "Found exit at $a , done in $found steps\n";
+			print "Reached exist at ($a) in $found steps.\n";
 			print scalar(keys %visited)."\n";
+			$found = 1 ;
 			exit ;
 		}else{
 			if(exists $visited{$a}){
@@ -106,12 +106,18 @@ sub start{
 			}
 		}
 	}	
+
+	if($found){
+		print "Exit found!\n";
+	}else{
+		print "Exit not found!\n";
+	}
 }
 
 sub expand{
 	my ($coords) = @_ ;
 	my ($x,$y) = split(",",$coords);
-	
+	print "f($x,$y) = ".f($x,$y)."\n";	
 	if($graph[$y][$x]->{left} == 1 ){$fringe->add(($x-1) .','.$y,f($x-1,$y));}
 	if($graph[$y][$x]->{up} == 1 ){$fringe->add($x.','. ($y-1),f($x,$y-1))};
 	if($graph[$y][$x]->{right} == 1 ){$fringe->add(($x+1) .','.$y,f($x+1,$y));}
