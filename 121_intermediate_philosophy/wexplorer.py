@@ -8,6 +8,7 @@ if len(sys.argv) != 2 :
 	sys.exit(-1)
 
 hist = [] 
+cache = dict()
 base = 'http://en.wikipedia.org'
 currT = '' 
 nextTarget = sys.argv[1]
@@ -18,6 +19,7 @@ while (currT != 'Philosophy') :
 	request.add_header('User-Agent','CLIClient/1.0')	
 	opener = urllib2.build_opener()
 	feeddata = opener.open(request).read()
+	cache[nextTarget] = feeddata
 	opener.close()
 	par = Parser()
 	par.feed(feeddata)

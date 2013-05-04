@@ -33,9 +33,8 @@ class Parser(SGMLParser):
 	def start_a(self, attrs):
 		ad = self.dictify(attrs)
 		if self.inP and not self.inRestr and self.first and self.inMain :
-			if not ( 'class' in ad.keys() and ad.get('class') == 'mw-redirect' ):
-				self.first = False 
-				self.frstLink = ad.get('href')
+			self.first = False 
+			self.frstLink = ad.get('href')
 
 	def start_div(self, attrs):
 		ad = self.dictify(attrs)
