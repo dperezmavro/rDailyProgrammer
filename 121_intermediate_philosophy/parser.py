@@ -21,12 +21,9 @@ class Parser(SGMLParser):
 			self.currTitle = data 
 		if self.inP :
 			if self.start_r.search(data) :
-				#print 'in parenthesis'
 				self.inRestr = True
 			elif self.end_r.search(data) :
-				#print 'closing parenthesis'
 				self.inRestr = False
-			#print 'reading data of ',SGMLParser.get_starttag_text(self),data
 
 	def start_span(self , attrs):
 		ad = self.dictify(attrs)
@@ -36,7 +33,6 @@ class Parser(SGMLParser):
 	def start_a(self, attrs):
 		ad = self.dictify(attrs)
 		if self.inP and not self.inRestr and self.first and self.inMain :
-			#print 'reading a:', ad.get('href')
 			if not ( 'class' in ad.keys() and ad.get('class') == 'mw-redirect' ):
 				self.first = False 
 				self.frstLink = ad.get('href')
