@@ -2,8 +2,6 @@
 import sys 
 import urllib2
 from parser import Parser
-from xml.dom.minidom import parseString
-from HTMLParser import HTMLParser
 
 if len(sys.argv) != 2 :
 	print 'usage : wexplore.py article-url'
