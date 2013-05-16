@@ -20,14 +20,12 @@ def walk(fr, to ) :
 		sys.exit(1)
 	else :
 		visited.append(fr)
-
+	
 	for i in to:
 		if i in G :
 			walk(i, G[i])
 			visited.remove(i)
 	
-
 for (k,v) in G.items():
 	walk(k,v)
 	visited = [] 
-print G 
